@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+{% load static from staticfiles %}
+<html lang="en" dir="ltr">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <head>
+    <meta charset="utf-8">
+    <title>FROSTED SKY</title>
+    <style>html{font-family: Helvetica; display:inline-block; margin: 0px auto; text-align: center;}
+  h1{color: #0F3376; padding: 2vh;}p{font-size: 1.5rem;}.button{display: inline-block;background-color: #E82B25; border: none;
+  border-radius: 4px; color: white; padding: 16px 40px; text-decoration: none; font-size: 30px; margin: 2px; cursor: pointer;}
+  .button2{background-color: #e7bd3b;}.button3 {background-color: #a61263;}.italic {font-style: italic;}
+</style>
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <ul class="nav navbar-nav">
+    <h1>WELCOME TO FROSTED SKY!!!</h1>
+    <p class="italic"> IOT PLATFORM </p>
+    <li><a href="{% url 'login'%}"> login</a></LI>
+    <li><a href="{% url 'logout'%}"> logout</a></LI>
+    <li><a href="{% url 'register'%}"> register</a></LI>
+    {% if user.is_authenticated %}
+      <p class="italic">Hi {{ user.username }} what's up?!</p>
+    {% else %}
+      <p class="italic">You are not logged in for enabling change and manage your stracture please login first</p>
+    {% endif %}
+  </ul>
+        </div>
+      </nav>
+    {%block content %}
+
+    {%endblock content%}
+    {% if user.is_authenticated %}
+    <p>GPIO state: {{position}} </p>
+    <p class="italic"><a href="{%url 'delta:on'%}"><button onclick="alert('You turned off flowerpot')" class="button button2">ON</button></a></p>
+    <p class="italic"><a href="{%url 'delta:off'%}"><button onclick="alert('You turned on flowerpot')" class="button">OFF</button></a></p>
+    <p class="italic"><a href="{%url 'delta:function'%}"><button class="button button3">soil moisture</button></a></P>
+    <a><select id="groups" name="groups">
+      <optgroup label="state">
+        <option>damp</option>
+        <option selected>waterlogged</option>
+        <option>dranch</option>
+        <option>dry</option>
+        </optgroup>
+    </select></a>
+    <input type="submit" value="submit">
+
+    {% endif %}
+  </body>
+</html>
