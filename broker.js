@@ -4,13 +4,14 @@ var mosca = require("mosca");
 var ascoltatore = {
   type: 'redis',
   redis: require('redis'),
-  db: 12,
+  db: 2,
   port: 6379,
   return_buffers: true, // to handle binary payloads
   host: "localhost"
 };
 var redis = require('redis');
 var redisdb = redis.createClient(); //creates a client for send and receive data from redis database
+redisdb.select(11, function() { /* ... */ });
 const settings = {
   port: 1883,
   backend: ascoltatore,

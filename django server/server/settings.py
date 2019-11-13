@@ -27,22 +27,22 @@ SECRET_KEY = 'a&sp9oubjjkvjy(mdalc8tokvdgdp+@ujl&ha5yf(p!)eoqnin'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 #config redis
-CACHES = {
-  "default": {
-       "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/10",
-       "OPTIONS": {
-           "CLIENT_CLASS": "django_redis.client.DefaultClient"
-        },
-       "KEY_PREFIX": "example"
-       #"PASSWORD": "mysecret"
-   }
-}
+#CACHES = {
+#  "default": {
+#       "BACKEND": "django_redis.cache.RedisCache",
+#        "LOCATION": "redis://127.0.0.1:6379/10",
+#       "OPTIONS": {
+#           "CLIENT_CLASS": "django_redis.client.DefaultClient"
+#        },
+#       "KEY_PREFIX": "example"
+#       #"PASSWORD": "mysecret"
+#   }
+#}
 #CONSTANCE_REDIS_CONNECTION = {
 #    'host': 'localhost',
 #    'port': 6379,
@@ -61,13 +61,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.redirects',
-#    'constance.backends.database',
+    'constance.backends.database',
     'delta',
     'main',
 ]
 
 MIDDLEWARE = [
-    'django.middleware.cache.UpdateCacheMiddleware', #redis
+    #'django.middleware.cache.UpdateCacheMiddleware', #redis
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -76,7 +76,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',  #redis
+    #'django.middleware.cache.FetchFromCacheMiddleware',  #redis
 ]
 
 ROOT_URLCONF = 'server.urls'
@@ -156,7 +156,7 @@ STATICFIELS_DIRS=[
 ]
 
 STATIC_URL = '/static/'
-ALLOWED_HOSTS = ['*']
+
 SITE_ID = 1
 
 STATICFILES_DIRS = [STATIC_DIR,]

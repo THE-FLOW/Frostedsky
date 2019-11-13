@@ -1,15 +1,17 @@
 import django
 import redis
-from django.core.cache import caches
+#from django.core.cache import caches
 from django.shortcuts import render,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 import json
+import pickle
 from django.http import JsonResponse
 from delta.models import status,led
 from django.db import connection
 from django.views.decorators.csrf import csrf_protect
-redis = redis.Redis(db=12)
+from pprint import pprint
+redis = redis.Redis(host='localhost', port=6379,db=12)
 pubsub = redis.pubsub() #for publish and subscribe database
 pipeline = redis.pipeline() #for send order to database
 def node(request):
@@ -29,7 +31,7 @@ def node(request):
 
 # cache.set("key", "value1", nx=True)    #for work with redis database
 # cache.set("key", "value2", nx=True)
-
+u = {"Name":"Pradeep", "Company":"SCTL", "Address":"Mumbai", "Location":"RCP"}
 def show(request):
     ##form=nodemcu(request.POST or None)
     obj=get_object_or_404(status, id=1)
@@ -78,7 +80,14 @@ def show(request):
 def function(request):
     #pubsub.subscribe('testchannel')
     #r=redis.hvals('publisher2pd')
-    r=redis.mset({"Croatia": "Zagreb", "Bahamas": "Nassau"})
+
+    r=redis.hmset("pythonDict", u) #save python dic in redis
+    #for save data in serialized data needless to load in utf-8 mod---------------
+    #pdic = pickle.dumps(u)
+    #r=redis.set('mydict',pdic)
+    #----------------------------------
+    #r=redis.set('bing', 'baz')
+    #r=redis.mset({"Croatia": "Zagreb", "Bahamas": "Nassau"})
     obj= status.objects.get(id=1)
     obj2= led.objects.get(id=1)
     content={
@@ -91,7 +100,13 @@ def function(request):
     return render(request,'delta/show.html',content)
 @login_required
 def off(request):
-    f=json.loads(str(redis.hvals("publisher2pd")))
+    #f=redis.get("bing").decode('UTF-8')
+    f=redis.hgetall("publisher2pd") # get python dic
+    # for load data from serialized data---------------
+
+    #read_dict = redis.get('mydict')
+    #f = pickle.loads(read_dict)
+    #------------------------------------
     print(f)
     obj= led.objects.get(id=1)
     obj.order='off'
